@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 const UsersSchema = new mongoose.Schema({
     username: {
@@ -29,9 +30,7 @@ const UsersSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
-    },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date
+    }
 }, {
     timestamps: true
 })
