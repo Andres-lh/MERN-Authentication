@@ -46,7 +46,7 @@ export const login = async (req, res, next) => {
     }
 }
 
-export const forgotPassword = async (req, res) => {
+export const forgotPassword = async (req, res, next) => {
     const { email } = req.body;
 
     try {
@@ -56,7 +56,7 @@ export const forgotPassword = async (req, res) => {
 
         const accessToken = resetPasswordToken(user);
 
-        const resetUrl = `${process.env.CLIENT_URL}/users/reset/${accessToken}`;
+        const resetUrl = `${process.env.CLIENT_URL}/users/resetpassword/${accessToken}`;
         
         const message =  `
             <h1>You have requested a password reset</h1>

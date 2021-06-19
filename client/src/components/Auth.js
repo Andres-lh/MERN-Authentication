@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Auth() {
 
     const [isSignUp, setIsSignUp] = useState(true);
     const history = useHistory();
+    const [error, setError] = useState('');
     const [user, setUser] = useState({
         username: '',
         email: '',
@@ -28,6 +29,7 @@ function Auth() {
             password: '',
             confirmPassword: ''
         })
+        setError('');
     }
 
     const onChangeInput = (e) => {
@@ -54,7 +56,6 @@ function Auth() {
                     header
                 );
                 localStorage.setItem("authToken", data.token);
-    
                 history.push("/")
             } else {
                 const { data } = await axios.post(
@@ -69,7 +70,7 @@ function Auth() {
             }
             
         } catch (error) {
-            console.log(error)
+            setError(error.response.data.error);
         }
     }
 
@@ -89,6 +90,7 @@ function Auth() {
                                 <input type="password" name="password" id="password" value={user.password} required onChange={onChangeInput}/>
                             </div>
                         </>
+
                     ) : (
                         <>
                             <div>
@@ -112,17 +114,19 @@ function Auth() {
                     { isSignUp ? (
                         <>
                             <p>No account yet? <span onClick={switchAuth}>create one!</span></p>
+                            <Link to="/forgotPassword">Forgot Password?</Link>
                         </>
+                        
                     ) : (
                         <>
                             <p>Already have an account? <span onClick={switchAuth}>Log in</span></p>
                         </>
                     )
-                        
                     }
-
-                    <button>{isSignUp ? "Login" : "Register"}</button>
-                    
+                    <span>{error}</span>
+                    <div>
+                        <button>{isSignUp ? "Login" : "Register"}</button>
+                    </div>
                 </form>
             </div>
         </div>
